@@ -15,9 +15,47 @@
   </head>
   <body>
     <header>
-      <h1 class="location">London, Uk</h1>
-      <p class="header-date">Monday 29, August</p>
+      <div class="inner-header-container">
+        <h1 class="location">London, Uk</h1>
+        <p class="header-date">Monday 29, August</p>
+      </div>
     </header>
+    <section class="current-weather">
+      <div class="current-left-weather-details">
+        <img
+          src="https://openweathermap.org/img/wn/10d@2x.png"
+          alt="weather-description"
+        />
+        <p class="current-temperature">21°</p>
+        <p class="current-weather-description">Mostly Sunny</p>
+      </div>
+      <div class="current-right-weather-details">
+        <div class="current-high-temp-container">
+          <p class="current-high-temperature current-top-details">21°</p>
+          <p class="current-bottom-details">High</p>
+        </div>
+        <div class="current-wind-speed-container">
+          <p class="current-wind-speed current-top-details">12mph</p>
+          <p class="current-bottom-details">Wind</p>
+        </div>
+        <div class="current-sunrise-container">
+          <p class="current-sunrise-time current-top-details">05:27</p>
+          <p class="current-bottom-details">Sunrise</p>
+        </div>
+        <div class="current-low-temp-container">
+          <p class="current-low-temperature current-top-details">10°</p>
+          <p class="current-bottom-details">Low</p>
+        </div>
+        <div class="current-rain-percentage-container">
+          <p class="current-rain-percentage current-top-details">75%</p>
+          <p class="current-bottom-details">Rain</p>
+        </div>
+        <div class="current-sunrise-container">
+          <p class="current-sunset-time top-details">20:57</p>
+          <p class="current-bottom-details">Sunset</p>
+        </div>
+      </div>
+    </section>
     <section class="todays-weather">
       <h2>Todays weather</h2>
       <div class="hourly-weather">
@@ -96,7 +134,7 @@
         </div>
         <div class="rain-percentage-container">
           <p class="rain-percentage top-details">75%</p>
-          <p class="bottom-details">Wind</p>
+          <p class="bottom-details">Rain</p>
         </div>
       </div>
       <div class="daily-weather">
@@ -122,7 +160,7 @@
         </div>
         <div class="rain-percentage-container">
           <p class="rain-percentage top-details">75%</p>
-          <p class="bottom-details">Wind</p>
+          <p class="bottom-details">Rain</p>
         </div>
       </div>
     </section>
