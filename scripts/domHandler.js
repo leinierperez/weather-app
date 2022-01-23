@@ -6,25 +6,18 @@ const inputHandler = (function () {
   const searchOptionsDiv = document.querySelector('.search-options');
 
   const init = () => {
-    searchInput.addEventListener('input', getCityOptions);
+    searchInput.addEventListener('input', displaySearchOptions);
   };
 
-  const getCityOptions = async (e) => {
+  const displaySearchOptions = async (e) => {
     const inputText = e.target.value;
     if (inputText === '') {
       setSearchOptionsStyles('hidden');
       return;
     }
     const locationData = await dataHandler.getLocations(inputText);
-    displaySearchOptions(locationData);
-  };
-
-  const displaySearchOptions = (locationData) => {
-    if (locationData.length === 0) {
-      setSearchOptionsStyles('hidden');
-      return;
-    }
     setSearchOptionsStyles('shown');
+
     const searchOptions = document.querySelectorAll('.search-option') || [];
     for (let option of searchOptions) {
       option.remove();
@@ -56,7 +49,6 @@ const inputHandler = (function () {
 
   return {
     init,
-    displaySearchOptions,
   };
 })();
 
