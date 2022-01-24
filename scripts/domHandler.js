@@ -26,6 +26,8 @@ const inputHandler = (function () {
     for (let location of locationData) {
       let searchOption = document.createElement('p');
       searchOption.classList.add('search-option');
+      searchOption.setAttribute('longitude', location.longitude);
+      searchOption.setAttribute('latitude', location.latitude);
       searchOptionsDiv.appendChild(searchOption);
 
       searchOption.innerText = `${location.cityName}, ${
