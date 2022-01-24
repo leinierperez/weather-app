@@ -11,11 +11,11 @@ const inputHandler = (function () {
 
   const displaySearchOptions = async (e) => {
     const inputText = e.target.value;
-    if (inputText === '') {
+    const locationData = await dataHandler.getLocations(inputText);
+    if (inputText === '' || locationData.length === 0) {
       setSearchOptionsStyles('hidden');
       return;
     }
-    const locationData = await dataHandler.getLocations(inputText);
     setSearchOptionsStyles('shown');
 
     const searchOptions = document.querySelectorAll('.search-option') || [];

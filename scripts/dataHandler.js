@@ -33,6 +33,7 @@ const dataHandler = (function () {
   };
 
   const getLocations = async (inputText) => {
+    if (inputText === '') return;
     const geoCodingData = await getGeocodingData(inputText);
     const locationData = formatLocationData(geoCodingData);
     return locationData;
