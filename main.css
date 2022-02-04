@@ -175,6 +175,7 @@ header {
 .current-weather-description {
   font-size: 1.4rem;
   padding-left: 5px;
+  text-transform: capitalize;
 }
 
 .current-left-weather-details img {

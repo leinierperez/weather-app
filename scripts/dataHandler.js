@@ -21,7 +21,7 @@ const dataHandler = (function () {
   const getWeatherData = async (latitude, longitude) => {
     try {
       const weatherResponse = await fetch(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,alerts&appid=${apiKey}`,
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&exclude=minutely,alerts&appid=${apiKey}`,
         { mode: 'cors' }
       );
 
@@ -30,6 +30,85 @@ const dataHandler = (function () {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const getCurrentWeather = async (latitude, longitude) => {
+    const weatherData = await dataHandler.getWeatherData(latitude, longitude);
+    const currentData = formatCurrentWeatherData(weatherData);
+    // for (let [index, hourlyData] of weatherData.hourly.entries()) {
+    //   if (index >= 0 && index <= 23) {
+    //     console.log(hourlyData);
+    //     console.log(`${index}: ${convertUtcDate(hourlyData.dt, timezone)}`);
+    //   }
+    // }
+
+    return currentData;
+  };
+
+  const formatCurrentWeatherData = (data) => {
+    const minTemp = Math.round(data.daily[0].temp.min);
+    const maxTemp = Math.round(data.daily[0].temp.max);
+    const windSpeed = Math.round(data.current.wind_speed * 2.2369);
+    const currentTemp = Math.round(data.current.temp);
+    const humidity = data.current.humidity;
+    const sunrise = convertUtcDate(data.current.sunrise, data.timezone);
+    const sunset = convertUtcDate(data.current.sunset, data.timezone);
+    const weatherDescription = data.current.weather[0].description;
+    const weatherIconName = data.current.weather[0].icon;
+    const date = convertDate(data.current.dt);
+    return {
+      minTemp,
+      maxTemp,
+      windSpeed,
+      currentTemp,
+      humidity,
+      sunrise,
+      sunset,
+      weatherDescription,
+      weatherIconName,
+      date,
+    };
+  };
+
+  const convertDate = (date) => {
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    const weekDay = new Date(date * 1000).getDate().toString();
+    const day = days[new Date(date * 1000).getDay()];
+    const month = months[new Date(date * 1000).getMonth()];
+    return { day, weekDay, month };
+  };
+
+  const convertUtcDate = (utcTime, timezone = 'America/New_York') => {
+    const date = new Date(utcTime * 1000);
+    const time = date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: timezone,
+    });
+    return time.split(' ')[0];
   };
 
   const getLocations = async (inputText) => {
@@ -58,6 +137,7 @@ const dataHandler = (function () {
   return {
     getGeocodingData,
     getWeatherData,
+    getCurrentWeather,
     getLocations,
     formatLocationData,
   };

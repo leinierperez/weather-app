@@ -1,12 +1,53 @@
 import dataHandler from './dataHandler.js';
 
-const inputHandler = (function () {
+const domHandler = (function () {
   const searchInput = document.querySelector('.search-bar');
   const searchButton = document.querySelector('.search-btn');
   const searchOptionsDiv = document.querySelector('.search-options');
+  const currentTemperature = document.querySelector('.current-temperature');
+  const currentWeatherDescription = document.querySelector(
+    '.current-weather-description'
+  );
+  const currentMaxTemperature = document.querySelector(
+    '.current-high-temperature'
+  );
+  const currentWindSpeed = document.querySelector('.current-wind-speed');
+  const currentSunriseTime = document.querySelector('.current-sunrise-time');
+  const currentMinTemperature = document.querySelector(
+    '.current-low-temperature'
+  );
+  const currentHumidity = document.querySelector(
+    '.current-humidity-percentage'
+  );
+  const currentSunsetTime = document.querySelector('.current-sunset-time');
 
   const init = () => {
     searchInput.addEventListener('input', displaySearchOptions);
+    searchInput.addEventListener('keyup', displayWeatherData);
+    searchButton.addEventListener('click', displayWeatherData);
+    searchOptionsDiv.addEventListener('click', displayWeatherData);
+  };
+
+  const displayWeatherData = async (e) => {
+    if (e.type === 'keyup' && e.keyCode !== 13) return;
+    const location = e.target.closest('.search-option');
+    if (!location) return;
+    const latitude = location.getAttribute('latitude');
+    const longitude = location.getAttribute('longitude');
+    const currentWeather = await dataHandler.getCurrentWeather(
+      latitude,
+      longitude
+    );
+    currentTemperature.innerText = `${currentWeather.currentTemp}°`;
+
+    currentWeatherDescription.innerText = currentWeather.weatherDescription;
+    currentMaxTemperature.innerText = `${currentWeather.maxTemp}°`;
+    currentWindSpeed.innerText = `${currentWeather.windSpeed}mph`;
+    currentSunriseTime.innerText = currentWeather.sunrise;
+    currentMinTemperature.innerText = `${currentWeather.minTemp}°`;
+    currentHumidity.innerText = `${currentWeather.humidity}%`;
+    currentSunsetTime.innerText = currentWeather.sunset;
+    console.log(currentWeather);
   };
 
   const displaySearchOptions = async (e) => {
@@ -54,4 +95,4 @@ const inputHandler = (function () {
   };
 })();
 
-export default inputHandler;
+export default domHandler;
