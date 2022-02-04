@@ -21,6 +21,8 @@ const domHandler = (function () {
   );
   const currentSunsetTime = document.querySelector('.current-sunset-time');
   const currentWeatherIcon = document.querySelector('#current-weather-icon');
+  const headerLocation = document.querySelector('.location');
+  const headerDate = document.querySelector('.header-date');
 
   const init = () => {
     searchInput.addEventListener('input', displaySearchOptions);
@@ -52,6 +54,10 @@ const domHandler = (function () {
     currentHumidity.innerText = `${currentWeather.humidity}%`;
     currentSunsetTime.innerText = currentWeather.sunset;
     currentWeatherIcon.src = iconUrl;
+    headerDate.innerText = `${currentWeather.date.day} ${currentWeather.date.weekDay}, ${currentWeather.date.month}`;
+    headerLocation.innerText = `${
+      location.innerText.split(',')[0]
+    }, ${location.getAttribute('country')}`;
     console.log(currentWeather);
   };
 
@@ -63,7 +69,6 @@ const domHandler = (function () {
       return;
     }
     setSearchOptionsStyles('shown');
-
     const searchOptions = document.querySelectorAll('.search-option') || [];
     for (let option of searchOptions) {
       option.remove();
@@ -74,6 +79,7 @@ const domHandler = (function () {
       searchOption.classList.add('search-option');
       searchOption.setAttribute('longitude', location.longitude);
       searchOption.setAttribute('latitude', location.latitude);
+      searchOption.setAttribute('country', location.country);
       searchOptionsDiv.appendChild(searchOption);
 
       searchOption.innerText = `${location.cityName}, ${
