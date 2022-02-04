@@ -20,6 +20,7 @@ const domHandler = (function () {
     '.current-humidity-percentage'
   );
   const currentSunsetTime = document.querySelector('.current-sunset-time');
+  const currentWeatherIcon = document.querySelector('#current-weather-icon');
 
   const init = () => {
     searchInput.addEventListener('input', displaySearchOptions);
@@ -38,8 +39,11 @@ const domHandler = (function () {
       latitude,
       longitude
     );
-    currentTemperature.innerText = `${currentWeather.currentTemp}°`;
+    const iconUrl = await dataHandler.getIconUrl(
+      currentWeather.weatherIconName
+    );
 
+    currentTemperature.innerText = `${currentWeather.currentTemp}°`;
     currentWeatherDescription.innerText = currentWeather.weatherDescription;
     currentMaxTemperature.innerText = `${currentWeather.maxTemp}°`;
     currentWindSpeed.innerText = `${currentWeather.windSpeed}mph`;
@@ -47,6 +51,7 @@ const domHandler = (function () {
     currentMinTemperature.innerText = `${currentWeather.minTemp}°`;
     currentHumidity.innerText = `${currentWeather.humidity}%`;
     currentSunsetTime.innerText = currentWeather.sunset;
+    currentWeatherIcon.src = iconUrl;
     console.log(currentWeather);
   };
 

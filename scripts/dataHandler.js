@@ -1,8 +1,15 @@
 const dataHandler = (function () {
-  let iconsUrl = 'http://openweathermap.org/img/wn/10d@2x.png';
   // This is a free api key. For the purposes of this project it's
   // okay to have the key here.
   const apiKey = '964aac2bae2c7c12657e7dfa45ed246e';
+
+  const getIconUrl = async (iconCode) => {
+    const response = await fetch(
+      `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+    );
+    const iconUrl = response.url;
+    return iconUrl;
+  };
 
   const getGeocodingData = async (cityName) => {
     try {
@@ -140,6 +147,7 @@ const dataHandler = (function () {
     getCurrentWeather,
     getLocations,
     formatLocationData,
+    getIconUrl,
   };
 })();
 
