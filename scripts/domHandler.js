@@ -23,12 +23,46 @@ const domHandler = (function () {
   const currentWeatherIcon = document.querySelector('#current-weather-icon');
   const headerLocation = document.querySelector('.location');
   const headerDate = document.querySelector('.header-date');
+  const hourlyWeatherContainer = document.querySelector(
+    '.hourly-weather-container'
+  );
 
   const init = () => {
     searchInput.addEventListener('input', displaySearchOptions);
     searchInput.addEventListener('keyup', displayWeatherData);
     searchButton.addEventListener('click', displayWeatherData);
     searchOptionsDiv.addEventListener('click', displayWeatherData);
+  };
+
+  const displayTodaysWeather = async (locationData, id) => {
+    const todaysWeather = await dataHandler.getTodaysWeatherData(
+      locationData,
+      id
+    );
+
+    while (hourlyWeatherContainer.firstChild) {
+      hourlyWeatherContainer.removeChild(hourlyWeatherContainer.lastChild);
+    }
+
+    for (const hourlyData of todaysWeather) {
+      const hourlyWeatherDiv = document.createElement('div');
+      const timeParagraph = document.createElement('p');
+      const weatherImgIcon = document.createElement('img');
+      const temperatureParagraph = document.createElement('p');
+
+      hourlyWeatherDiv.classList.add('hourly-weather');
+      timeParagraph.classList.add('time');
+      temperatureParagraph.classList.add('temperature');
+
+      timeParagraph.innerText = hourlyData.time;
+      weatherImgIcon.src = await dataHandler.getIconUrl(hourlyData.iconCode);
+      temperatureParagraph.innerText = hourlyData.temp;
+
+      hourlyWeatherContainer.appendChild(hourlyWeatherDiv);
+      hourlyWeatherDiv.appendChild(timeParagraph);
+      hourlyWeatherDiv.appendChild(weatherImgIcon);
+      hourlyWeatherDiv.appendChild(temperatureParagraph);
+    }
   };
 
   const displayWeatherData = async (e) => {
@@ -41,6 +75,7 @@ const domHandler = (function () {
       locationData,
       id
     );
+    displayTodaysWeather(locationData, id);
     const iconUrl = await dataHandler.getIconUrl(
       currentWeather.weatherIconName
     );
