@@ -55,8 +55,8 @@ const dataHandler = (function () {
     const windSpeed = Math.round(data.current.wind_speed * 2.2369);
     const currentTemp = Math.round(data.current.temp);
     const humidity = data.current.humidity;
-    const sunrise = convertUtcDate(data.current.sunrise, data.timezone);
-    const sunset = convertUtcDate(data.current.sunset, data.timezone);
+    const sunrise = convertUtcDate(data.current.sunrise, data.timezone, false);
+    const sunset = convertUtcDate(data.current.sunset, data.timezone, false);
     const weatherDescription = data.current.weather[0].description;
     const weatherIconName = data.current.weather[0].icon;
     const date = convertDate(data.current.dt);
@@ -105,11 +105,15 @@ const dataHandler = (function () {
     return { day, weekDay, month };
   };
 
-  const convertUtcDate = (utcTime, timezone = 'America/New_York') => {
+  const convertUtcDate = (
+    utcTime,
+    timezone = 'America/New_York',
+    isNumeric
+  ) => {
     const date = new Date(utcTime * 1000);
     const time = date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
+      hour: isNumeric ? 'numeric' : '2-digit',
+      minute: isNumeric ? 'numeric' : '2-digit',
       timeZone: timezone,
     });
     return time.split(' ')[0];
