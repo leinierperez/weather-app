@@ -14,7 +14,7 @@ const dataHandler = (function () {
   const getGeocodingData = async (cityName) => {
     try {
       const geocodingRespone = await fetch(
-        `http://api.openweathermap.org/geo/1.0/direct?q=${cityName},&limit=5&appid=${apiKey}`,
+        `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${apiKey}`,
         { mode: 'cors' }
       );
 
@@ -126,6 +126,7 @@ const dataHandler = (function () {
   };
 
   const formatLocationData = (data) => {
+    if (!(Symbol.iterator in Object(data))) return;
     const locationsArray = [];
     for (let cityData of data) {
       const locationData = {

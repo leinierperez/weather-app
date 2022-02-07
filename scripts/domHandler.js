@@ -33,6 +33,7 @@ const domHandler = (function () {
 
   const displayWeatherData = async (e) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
+    const data = await dataHandler.getLocations(searchInput.value);
     const location = e.target.closest('.search-option');
     if (!location) return;
     const latitude = location.getAttribute('latitude');
@@ -55,16 +56,21 @@ const domHandler = (function () {
     currentSunsetTime.innerText = currentWeather.sunset;
     currentWeatherIcon.src = iconUrl;
     headerDate.innerText = `${currentWeather.date.day} ${currentWeather.date.weekDay}, ${currentWeather.date.month}`;
-    headerLocation.innerText = `${
-      location.innerText.split(',')[0]
-    }, ${location.getAttribute('country')}`;
-    console.log(currentWeather);
+    const headerCityName = data[0].cityName || location.innerText.split(',')[0];
+    const headerCountryName =
+      data[0].country || location.getAttribute('country');
+    headerLocation.innerText = `${headerCityName}, ${headerCountryName}`;
   };
 
   const displaySearchOptions = async (e) => {
     const inputText = e.target.value;
     const locationData = await dataHandler.getLocations(inputText);
-    if (inputText === '' || locationData.length === 0) {
+
+    if (
+      !(Symbol.iterator in Object(locationData)) ||
+      locationData.length === 0 ||
+      inputText === ''
+    ) {
       setSearchOptionsStyles('hidden');
       return;
     }
