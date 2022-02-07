@@ -45,12 +45,6 @@ const dataHandler = (function () {
       locationData[id].longitude
     );
     const currentData = formatCurrentWeatherData(weatherData);
-    // for (let [index, hourlyData] of weatherData.hourly.entries()) {
-    //   if (index >= 0 && index <= 23) {
-    //     console.log(hourlyData);
-    //     console.log(`${index}: ${convertUtcDate(hourlyData.dt, timezone)}`);
-    //   }
-    // }
 
     return currentData;
   };
