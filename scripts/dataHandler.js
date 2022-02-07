@@ -57,7 +57,7 @@ const dataHandler = (function () {
         todaysWeather.push({ time, iconCode, temp });
       }
     }
-    console.log(todaysWeather);
+    return todaysWeather;
   };
 
   const getCurrentWeather = async (locationData, id) => {
