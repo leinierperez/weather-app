@@ -33,14 +33,13 @@ const domHandler = (function () {
 
   const displayWeatherData = async (e) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
-    const data = await dataHandler.getLocations(searchInput.value);
+    const locationData = await dataHandler.getLocations(searchInput.value);
     const location = e.target.closest('.search-option');
     if (!location) return;
-    const latitude = location.getAttribute('latitude');
-    const longitude = location.getAttribute('longitude');
+    const id = location.getAttribute('id');
     const currentWeather = await dataHandler.getCurrentWeather(
-      latitude,
-      longitude
+      locationData,
+      id
     );
     const iconUrl = await dataHandler.getIconUrl(
       currentWeather.weatherIconName
@@ -56,10 +55,7 @@ const domHandler = (function () {
     currentSunsetTime.innerText = currentWeather.sunset;
     currentWeatherIcon.src = iconUrl;
     headerDate.innerText = `${currentWeather.date.day} ${currentWeather.date.weekDay}, ${currentWeather.date.month}`;
-    const headerCityName = data[0].cityName || location.innerText.split(',')[0];
-    const headerCountryName =
-      data[0].country || location.getAttribute('country');
-    headerLocation.innerText = `${headerCityName}, ${headerCountryName}`;
+    headerLocation.innerText = `${locationData[id].cityName}, ${locationData[id].country}`;
   };
 
   const displaySearchOptions = async (e) => {
@@ -83,9 +79,7 @@ const domHandler = (function () {
     for (let location of locationData) {
       let searchOption = document.createElement('p');
       searchOption.classList.add('search-option');
-      searchOption.setAttribute('longitude', location.longitude);
-      searchOption.setAttribute('latitude', location.latitude);
-      searchOption.setAttribute('country', location.country);
+      searchOption.setAttribute('id', location.id);
       searchOptionsDiv.appendChild(searchOption);
 
       searchOption.innerText = `${location.cityName}, ${

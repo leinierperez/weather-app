@@ -39,8 +39,11 @@ const dataHandler = (function () {
     }
   };
 
-  const getCurrentWeather = async (latitude, longitude) => {
-    const weatherData = await dataHandler.getWeatherData(latitude, longitude);
+  const getCurrentWeather = async (locationData, id) => {
+    let weatherData = await dataHandler.getWeatherData(
+      locationData[id].latitude,
+      locationData[id].longitude
+    );
     const currentData = formatCurrentWeatherData(weatherData);
     // for (let [index, hourlyData] of weatherData.hourly.entries()) {
     //   if (index >= 0 && index <= 23) {
@@ -128,8 +131,9 @@ const dataHandler = (function () {
   const formatLocationData = (data) => {
     if (!(Symbol.iterator in Object(data))) return;
     const locationsArray = [];
-    for (let cityData of data) {
+    for (let [index, cityData] of data.entries()) {
       const locationData = {
+        id: index,
         cityName: cityData.name,
         longitude: cityData.lon,
         latitude: cityData.lat,
