@@ -116,6 +116,8 @@ const dataHandler = (function () {
       minute: isNumeric ? 'numeric' : '2-digit',
       timeZone: timezone,
     });
+    if (isNumeric) return time;
+
     return time.split(' ')[0];
   };
 
