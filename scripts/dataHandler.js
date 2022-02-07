@@ -39,6 +39,27 @@ const dataHandler = (function () {
     }
   };
 
+  const getTodaysWeatherData = async (locationData, id) => {
+    let weatherData = await dataHandler.getWeatherData(
+      locationData[id].latitude,
+      locationData[id].longitude
+    );
+    let todaysWeather = [];
+    for (let [index, hourlyData] of weatherData.hourly.entries()) {
+      if (index >= 0 && index <= 24) {
+        const time = convertUtcDate(
+          hourlyData.dt,
+          locationData[id].timezone,
+          true
+        ).replace(':00 ', '');
+        const iconCode = hourlyData.weather[0].icon;
+        const temp = Math.round(hourlyData.temp);
+        todaysWeather.push({ time, iconCode, temp });
+      }
+    }
+    console.log(todaysWeather);
+  };
+
   const getCurrentWeather = async (locationData, id) => {
     let weatherData = await dataHandler.getWeatherData(
       locationData[id].latitude,
@@ -153,6 +174,7 @@ const dataHandler = (function () {
     getLocations,
     formatLocationData,
     getIconUrl,
+    getTodaysWeatherData,
   };
 })();
 
