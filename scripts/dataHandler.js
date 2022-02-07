@@ -49,7 +49,7 @@ const dataHandler = (function () {
       if (index >= 0 && index <= 24) {
         const time = convertUtcDate(
           hourlyData.dt,
-          locationData[id].timezone,
+          weatherData.timezone,
           true
         ).replace(':00 ', '');
         const iconCode = hourlyData.weather[0].icon;
@@ -126,11 +126,7 @@ const dataHandler = (function () {
     return { day, weekDay, month };
   };
 
-  const convertUtcDate = (
-    utcTime,
-    timezone = 'America/New_York',
-    isNumeric
-  ) => {
+  const convertUtcDate = (utcTime, timezone, isNumeric) => {
     const date = new Date(utcTime * 1000);
     const time = date.toLocaleTimeString('en-US', {
       hour: isNumeric ? 'numeric' : '2-digit',
