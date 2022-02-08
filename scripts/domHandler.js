@@ -35,7 +35,7 @@ const domHandler = (function () {
   };
 
   const displayTodaysWeather = async (weatherData) => {
-    const todaysWeather = await dataHandler.getTodaysWeatherData(weatherData);
+    const todaysWeather = dataHandler.getTodaysWeatherData(weatherData);
 
     while (hourlyWeatherContainer.firstChild) {
       hourlyWeatherContainer.removeChild(hourlyWeatherContainer.lastChild);
@@ -72,7 +72,7 @@ const domHandler = (function () {
       locationData[id].latitude,
       locationData[id].longitude
     );
-    const currentWeather = await dataHandler.getCurrentWeather(weatherData);
+    const currentWeather = dataHandler.getCurrentWeather(weatherData);
     displayTodaysWeather(weatherData);
     const iconUrl = await dataHandler.getIconUrl(
       currentWeather.weatherIconName

@@ -39,7 +39,7 @@ const dataHandler = (function () {
     }
   };
 
-  const getTodaysWeatherData = async (weatherData) => {
+  const getTodaysWeatherData = (weatherData) => {
     let todaysWeather = [];
     for (let [index, hourlyData] of weatherData.hourly.entries()) {
       if (index >= 0 && index <= 24) {
@@ -56,7 +56,7 @@ const dataHandler = (function () {
     return todaysWeather;
   };
 
-  const getCurrentWeather = async (weatherData) => {
+  const getCurrentWeather = (weatherData) => {
     const currentData = formatCurrentWeatherData(weatherData);
     return currentData;
   };
