@@ -65,9 +65,9 @@ const dataHandler = (function () {
         timezone
       );
       const iconCode = dailyWeather.weather[0].icon;
-      const minTemperature = dailyWeather.temp.min;
-      const maxTemperature = dailyWeather.temp.max;
-      const windSpeed = dailyWeather.wind_speed;
+      const minTemperature = Math.round(dailyWeather.temp.min);
+      const maxTemperature = Math.round(dailyWeather.temp.max);
+      const windSpeed = Math.round(dailyWeather.wind_speed);
       const humidity = dailyWeather.humidity;
       forecastWeather.push({
         monthDay,
