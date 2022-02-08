@@ -56,6 +56,41 @@ const dataHandler = (function () {
     return todaysWeather;
   };
 
+  const getForecastWeather = (weatherData) => {
+    const timezone = weatherData.timezone;
+    let forecastWeather = [];
+    for (const dailyWeather of weatherData.daily) {
+      const date = formatForecastDate(dailyWeather.dt, timezone);
+      const iconCode = dailyWeather.weather[0].icon;
+      const minTemperature = dailyWeather.temp.min;
+      const maxTemperature = dailyWeather.temp.max;
+      const windSpeed = dailyWeather.wind_speed;
+      const humidity = dailyWeather.humidity;
+      forecastWeather.push({
+        date,
+        iconCode,
+        minTemperature,
+        maxTemperature,
+        windSpeed,
+        humidity,
+      });
+    }
+    return forecastWeather;
+  };
+
+  const formatForecastDate = (timestamp, timezone) => {
+    const date = new Date(timestamp * 1000);
+    const dateTime = date.toLocaleString('en-US', {
+      timeZone: timezone,
+    });
+    const weekdayAbbreviation = date.toLocaleString('en-US', {
+      timeZone: timezone,
+      weekday: 'short',
+    });
+    const monthDay = dateTime.substring(0, 3);
+    return { monthDay, weekdayAbbreviation };
+  };
+
   const getCurrentWeather = (weatherData) => {
     const currentData = formatCurrentWeatherData(weatherData);
     return currentData;
@@ -162,6 +197,7 @@ const dataHandler = (function () {
     formatLocationData,
     getIconUrl,
     getTodaysWeatherData,
+    getForecastWeather,
   };
 })();
 
