@@ -60,14 +60,18 @@ const dataHandler = (function () {
     const timezone = weatherData.timezone;
     let forecastWeather = [];
     for (const dailyWeather of weatherData.daily) {
-      const date = formatForecastDate(dailyWeather.dt, timezone);
+      const { monthDay, weekdayAbbreviation } = formatForecastDate(
+        dailyWeather.dt,
+        timezone
+      );
       const iconCode = dailyWeather.weather[0].icon;
       const minTemperature = dailyWeather.temp.min;
       const maxTemperature = dailyWeather.temp.max;
       const windSpeed = dailyWeather.wind_speed;
       const humidity = dailyWeather.humidity;
       forecastWeather.push({
-        date,
+        monthDay,
+        weekdayAbbreviation,
         iconCode,
         minTemperature,
         maxTemperature,
