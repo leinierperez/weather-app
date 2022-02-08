@@ -91,7 +91,9 @@ const dataHandler = (function () {
       timeZone: timezone,
       weekday: 'short',
     });
-    const monthDay = dateTime.substring(0, 3);
+    const monthDay = dateTime
+      .split(', ')[0]
+      .replace(`/${date.getFullYear()}`, '');
     return { monthDay, weekdayAbbreviation };
   };
 
