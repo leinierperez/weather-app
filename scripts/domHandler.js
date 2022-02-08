@@ -34,11 +34,8 @@ const domHandler = (function () {
     searchOptionsDiv.addEventListener('click', displayWeatherData);
   };
 
-  const displayTodaysWeather = async (locationData, id) => {
-    const todaysWeather = await dataHandler.getTodaysWeatherData(
-      locationData,
-      id
-    );
+  const displayTodaysWeather = async (weatherData) => {
+    const todaysWeather = await dataHandler.getTodaysWeatherData(weatherData);
 
     while (hourlyWeatherContainer.firstChild) {
       hourlyWeatherContainer.removeChild(hourlyWeatherContainer.lastChild);
@@ -71,11 +68,12 @@ const domHandler = (function () {
     const location = e.target.closest('.search-option');
     if (!location) return;
     const id = location.getAttribute('id');
-    const currentWeather = await dataHandler.getCurrentWeather(
-      locationData,
-      id
+    const weatherData = await dataHandler.getWeatherData(
+      locationData[id].latitude,
+      locationData[id].longitude
     );
-    displayTodaysWeather(locationData, id);
+    const currentWeather = await dataHandler.getCurrentWeather(weatherData);
+    displayTodaysWeather(weatherData);
     const iconUrl = await dataHandler.getIconUrl(
       currentWeather.weatherIconName
     );
