@@ -62,18 +62,8 @@ const domHandler = (function () {
     }
   };
 
-  const displayWeatherData = async (e) => {
-    if (e.type === 'keyup' && e.keyCode !== 13) return;
-    const locationData = await dataHandler.getLocations(searchInput.value);
-    const location = e.target.closest('.search-option');
-    if (!location) return;
-    const id = location.getAttribute('id');
-    const weatherData = await dataHandler.getWeatherData(
-      locationData[id].latitude,
-      locationData[id].longitude
-    );
+  const displayCurrentWeather = async (weatherData, locationData, id) => {
     const currentWeather = dataHandler.getCurrentWeather(weatherData);
-    displayTodaysWeather(weatherData);
     const iconUrl = await dataHandler.getIconUrl(
       currentWeather.weatherIconName
     );
@@ -89,6 +79,20 @@ const domHandler = (function () {
     currentWeatherIcon.src = iconUrl;
     headerDate.innerText = `${currentWeather.date.day} ${currentWeather.date.weekDay}, ${currentWeather.date.month}`;
     headerLocation.innerText = `${locationData[id].cityName}, ${locationData[id].country}`;
+  };
+
+  const displayWeatherData = async (e) => {
+    if (e.type === 'keyup' && e.keyCode !== 13) return;
+    const locationData = await dataHandler.getLocations(searchInput.value);
+    const location = e.target.closest('.search-option');
+    if (!location) return;
+    const id = location.getAttribute('id');
+    const weatherData = await dataHandler.getWeatherData(
+      locationData[id].latitude,
+      locationData[id].longitude
+    );
+    displayCurrentWeather(weatherData, locationData, id);
+    displayTodaysWeather(weatherData);
   };
 
   const displaySearchOptions = async (e) => {
