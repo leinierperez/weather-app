@@ -29,6 +29,7 @@ const domHandler = (function () {
   const dailyWeatherContainer = document.querySelector(
     '.daily-weather-container'
   );
+  const errorDiv = document.querySelector('.error');
 
   const spinner = document.querySelector('.spinner');
 
@@ -163,12 +164,26 @@ const domHandler = (function () {
 
   const displayWeatherData = async (e) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
+    let id, locationData;
+    if (e.keyCode === 13 || e.type === 'click') {
+      id = 0;
+      locationData = await dataHandler.getLocations(searchInput.value);
+    } else {
+      const location = e.target.closest('.search-option');
+      if (!location) return;
+      id = location.getAttribute('id');
+      locationData = await dataHandler.getLocations(searchInput.value);
+    }
+    if (id === undefined || !locationData || locationData.length === 0) {
+      searchInput.style.border = '3px solid red';
+      searchInput.style.borderRight = 'none';
+      searchButton.style.border = '3px solid red';
+      searchButton.style.borderLeft = 'none';
+      errorDiv.style.display = 'block';
+      return;
+    }
     spinner.style.visibility = 'visible';
     setSearchOptionsStyles('hidden');
-    const locationData = await dataHandler.getLocations(searchInput.value);
-    const location = e.target.closest('.search-option');
-    if (!location) return;
-    const id = location.getAttribute('id');
     const weatherData = await dataHandler.getWeatherData(
       locationData[id].latitude,
       locationData[id].longitude
@@ -182,7 +197,7 @@ const domHandler = (function () {
   const displaySearchOptions = async (e) => {
     const inputText = e.target.value;
     const locationData = await dataHandler.getLocations(inputText);
-
+    errorDiv.style.display = 'none';
     if (
       !(Symbol.iterator in Object(locationData)) ||
       locationData.length === 0 ||
