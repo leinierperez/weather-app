@@ -35,6 +35,7 @@ const domHandler = (function () {
     searchInput.addEventListener('keyup', displayWeatherData);
     searchButton.addEventListener('click', displayWeatherData);
     searchOptionsDiv.addEventListener('click', displayWeatherData);
+    handleTodaysWeatherScroll();
   };
 
   const displayTodaysWeather = async (weatherData) => {
@@ -214,6 +215,49 @@ const domHandler = (function () {
       searchButton.style = 'border-bottom-right-radius: 0.5em;';
     }
     return;
+  };
+
+  const handleTodaysWeatherScroll = () => {
+    let isDown = false;
+    let scrollSpeedMultiplier = 3;
+    hourlyWeatherContainer.addEventListener('mousedown', (e) => {
+      isDown = true;
+      e.preventDefault();
+      cancelMomentumTracking();
+    });
+    hourlyWeatherContainer.addEventListener('mouseleave', () => {
+      isDown = false;
+    });
+    hourlyWeatherContainer.addEventListener('mouseup', () => {
+      isDown = false;
+      beginMomentumTracking();
+    });
+    hourlyWeatherContainer.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      let prevScrollLeft = hourlyWeatherContainer.scrollLeft;
+      hourlyWeatherContainer.scrollLeft -= e.movementX * scrollSpeedMultiplier;
+      velX = hourlyWeatherContainer.scrollLeft - prevScrollLeft;
+    });
+    let velX = 0;
+    let momentumID;
+    hourlyWeatherContainer.addEventListener('wheel', (e) => {
+      cancelMomentumTracking();
+    });
+    function beginMomentumTracking() {
+      cancelMomentumTracking();
+      momentumID = requestAnimationFrame(momentumLoop);
+    }
+    function cancelMomentumTracking() {
+      cancelAnimationFrame(momentumID);
+    }
+    function momentumLoop() {
+      hourlyWeatherContainer.scrollLeft += velX;
+      velX *= 0.95;
+      if (Math.abs(velX) > 0.5) {
+        momentumID = requestAnimationFrame(momentumLoop);
+      }
+    }
   };
 
   return {
