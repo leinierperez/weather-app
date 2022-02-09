@@ -303,11 +303,11 @@ h2 {
   cursor: pointer;
 }
 
-.toggle__input {
+.toggle-input {
   display: none;
 }
 
-.toggle__fill {
+.toggle-fill {
   position: relative;
   width: var(--width);
   height: var(--height);
@@ -316,11 +316,11 @@ h2 {
   transition: background 0.2s;
 }
 
-.toggle__input:checked + .toggle__fill {
+.toggle-input:checked + .toggle-fill {
   background: #8d99ae;
 }
 
-.toggle__fill::after {
+.toggle-fill::after {
   content: '';
   position: absolute;
   left: 0;
@@ -333,11 +333,11 @@ h2 {
   transition: transform 0.2s;
 }
 
-.toggle__input:checked + .toggle__fill::after {
+.toggle-input:checked + .toggle-fill::after {
   transform: translateX(var(--height));
 }
 
-.toggle__fill {
+.toggle-fill {
   color: #fff;
   display: flex;
   justify-content: space-around;
