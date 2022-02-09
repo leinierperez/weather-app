@@ -26,6 +26,9 @@ const domHandler = (function () {
   const hourlyWeatherContainer = document.querySelector(
     '.hourly-weather-container'
   );
+  const dailyWeatherContainer = document.querySelector(
+    '.daily-weather-container'
+  );
 
   const init = () => {
     searchInput.addEventListener('input', displaySearchOptions);
@@ -81,6 +84,80 @@ const domHandler = (function () {
     headerLocation.innerText = `${locationData[id].cityName}, ${locationData[id].country}`;
   };
 
+  const displayWeatherForecast = async (weatherData) => {
+    const weatherForecast = dataHandler.getForecastWeather(weatherData);
+    while (dailyWeatherContainer.firstChild) {
+      dailyWeatherContainer.removeChild(dailyWeatherContainer.lastChild);
+    }
+
+    for (const dailyWeatherData of weatherForecast) {
+      const dailyWeatherDiv = document.createElement('div');
+      const dateContainerDiv = document.createElement('div');
+      const weekDayP = document.createElement('p');
+      const dateP = document.createElement('p');
+      const iconImg = document.createElement('img');
+      const lowTempDiv = document.createElement('div');
+      const lowTempP = document.createElement('p');
+      const lowP = document.createElement('p');
+      const highTempDiv = document.createElement('div');
+      const highTempP = document.createElement('p');
+      const highP = document.createElement('p');
+      const windSpeedDiv = document.createElement('div');
+      const windSpeedP = document.createElement('p');
+      const windP = document.createElement('p');
+      const humidityDiv = document.createElement('div');
+      const humidityPercentageP = document.createElement('p');
+      const humidityP = document.createElement('p');
+
+      weekDayP.innerText = dailyWeatherData.weekdayAbbreviation;
+      dateP.innerText = dailyWeatherData.monthDay;
+      iconImg.src = await dataHandler.getIconUrl(dailyWeatherData.iconCode);
+      lowTempP.innerText = `${dailyWeatherData.minTemperature}°`;
+      lowP.innerText = 'Low';
+      highTempP.innerText = `${dailyWeatherData.maxTemperature}°`;
+      highP.innerText = 'High';
+      windSpeedP.innerText = `${dailyWeatherData.windSpeed}mph`;
+      windP.innerText = 'Wind';
+      humidityPercentageP.innerText = `${dailyWeatherData.humidity}%`;
+      humidityP.innerText = 'Humidity';
+
+      dailyWeatherDiv.classList.add('daily-weather');
+      dateContainerDiv.classList.add('date-container');
+      weekDayP.classList.add('week-day', 'top-details');
+      dateP.classList.add('date');
+      lowTempDiv.classList.add('low-temp-container');
+      lowTempP.classList.add('low-temperature', 'top-details');
+      lowP.classList.add('bottom-details');
+      highTempDiv.classList.add('high-temp-container');
+      highTempP.classList.add('high-temperature', 'top-details');
+      highP.classList.add('bottom-details');
+      windSpeedDiv.classList.add('wind-speed-container');
+      windSpeedP.classList.add('wind-speed', 'top-details');
+      windP.classList.add('bottom-details');
+      humidityDiv.classList.add('humidity-percentage-container');
+      humidityPercentageP.classList.add('humidity-percentage', 'top-details');
+      humidityP.classList.add('bottom-details');
+
+      dailyWeatherContainer.appendChild(dailyWeatherDiv);
+      dailyWeatherDiv.appendChild(dateContainerDiv);
+      dateContainerDiv.appendChild(weekDayP);
+      dateContainerDiv.appendChild(dateP);
+      dailyWeatherDiv.appendChild(iconImg);
+      dailyWeatherDiv.appendChild(lowTempDiv);
+      lowTempDiv.appendChild(lowTempP);
+      lowTempDiv.appendChild(lowP);
+      dailyWeatherDiv.appendChild(highTempDiv);
+      highTempDiv.appendChild(highTempP);
+      highTempDiv.appendChild(highP);
+      dailyWeatherDiv.appendChild(windSpeedDiv);
+      windSpeedDiv.appendChild(windSpeedP);
+      windSpeedDiv.appendChild(windP);
+      dailyWeatherDiv.appendChild(humidityDiv);
+      humidityDiv.appendChild(humidityPercentageP);
+      humidityDiv.appendChild(humidityP);
+    }
+  };
+
   const displayWeatherData = async (e) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
     const locationData = await dataHandler.getLocations(searchInput.value);
@@ -93,6 +170,7 @@ const domHandler = (function () {
     );
     displayCurrentWeather(weatherData, locationData, id);
     displayTodaysWeather(weatherData);
+    displayWeatherForecast(weatherData);
   };
 
   const displaySearchOptions = async (e) => {
