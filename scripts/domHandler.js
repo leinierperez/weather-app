@@ -165,24 +165,25 @@ const domHandler = (function () {
   const displayWeatherData = async (e) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
     let id, locationData;
-    if (e.keyCode === 13 || e.type === 'click') {
+    if (e === 'miami' || e.keyCode === 13 || e.type === 'click') {
       id = 0;
-      locationData = await dataHandler.getLocations(searchInput.value);
+      locationData = await dataHandler.getLocations(searchInput.value || e);
     } else {
       const location = e.target.closest('.search-option');
       if (!location) return;
       id = location.getAttribute('id');
       locationData = await dataHandler.getLocations(searchInput.value);
     }
+    spinner.style.visibility = 'visible';
     if (id === undefined || !locationData || locationData.length === 0) {
       searchInput.style.border = '3px solid red';
       searchInput.style.borderRight = 'none';
       searchButton.style.border = '3px solid red';
       searchButton.style.borderLeft = 'none';
       errorDiv.style.display = 'block';
+      spinner.style.visibility = 'hidden';
       return;
     }
-    spinner.style.visibility = 'visible';
     setSearchOptionsStyles('hidden');
     const weatherData = await dataHandler.getWeatherData(
       locationData[id].latitude,
@@ -282,6 +283,7 @@ const domHandler = (function () {
 
   return {
     init,
+    displayWeatherData,
   };
 })();
 
