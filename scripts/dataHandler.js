@@ -25,10 +25,10 @@ const dataHandler = (function () {
     }
   };
 
-  const getWeatherData = async (latitude, longitude) => {
+  const getWeatherData = async (latitude, longitude, unit) => {
     try {
       const weatherResponse = await fetch(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&exclude=minutely,alerts&appid=${apiKey}`,
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=${unit}&exclude=minutely,alerts&appid=${apiKey}`,
         { mode: 'cors' }
       );
 
@@ -105,7 +105,7 @@ const dataHandler = (function () {
   const formatCurrentWeatherData = (data) => {
     const minTemp = Math.round(data.daily[0].temp.min);
     const maxTemp = Math.round(data.daily[0].temp.max);
-    const windSpeed = Math.round(data.current.wind_speed * 2.2369);
+    const windSpeed = Math.round(data.current.wind_speed);
     const currentTemp = Math.round(data.current.temp);
     const humidity = data.current.humidity;
     const sunrise = convertUtcDate(data.current.sunrise, data.timezone, false);

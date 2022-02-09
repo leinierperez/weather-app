@@ -32,6 +32,7 @@ const domHandler = (function () {
   const errorDiv = document.querySelector('.error');
   const spinner = document.querySelector('.spinner');
   const searchBarDiv = document.querySelector('.search-bar-container');
+  const checkboxInput = document.querySelector('.toggle-input');
 
   const init = () => {
     searchInput.addEventListener('input', displaySearchOptions);
@@ -42,6 +43,17 @@ const domHandler = (function () {
       setSearchOptionsStyles('hidden');
     });
     handleTodaysWeatherScroll();
+    checkboxInput.addEventListener('change', changeTemperatureUnits);
+  };
+
+  const changeTemperatureUnits = (e) => {
+    if (e.target.checked) {
+      console.log('farenheit');
+      displayWeatherData('miami', 'imperial');
+    } else {
+      console.log('celsius');
+      displayWeatherData('miami', 'metric');
+    }
   };
 
   const displayTodaysWeather = async (weatherData) => {
@@ -59,7 +71,7 @@ const domHandler = (function () {
 
       hourlyWeatherDiv.classList.add('hourly-weather');
       timeParagraph.classList.add('time');
-      temperatureParagraph.classList.add('temperature');
+      temperatureParagraph.classList.add('temperature', 'temp');
 
       timeParagraph.innerText = hourlyData.time;
       weatherImgIcon.src = await dataHandler.getIconUrl(hourlyData.iconCode);
@@ -72,7 +84,7 @@ const domHandler = (function () {
     }
   };
 
-  const displayCurrentWeather = async (weatherData, locationData, id) => {
+  const displayCurrentWeather = async (weatherData, locationData, id, unit) => {
     const currentWeather = dataHandler.getCurrentWeather(weatherData);
     const iconUrl = await dataHandler.getIconUrl(
       currentWeather.weatherIconName
@@ -81,7 +93,8 @@ const domHandler = (function () {
     currentTemperature.innerText = `${currentWeather.currentTemp}°`;
     currentWeatherDescription.innerText = currentWeather.weatherDescription;
     currentMaxTemperature.innerText = `${currentWeather.maxTemp}°`;
-    currentWindSpeed.innerText = `${currentWeather.windSpeed}mph`;
+    const windUnit = unit === 'metric' ? 'm/s' : 'mph';
+    currentWindSpeed.innerText = `${currentWeather.windSpeed}${windUnit}`;
     currentSunriseTime.innerText = currentWeather.sunrise;
     currentMinTemperature.innerText = `${currentWeather.minTemp}°`;
     currentHumidity.innerText = `${currentWeather.humidity}%`;
@@ -91,7 +104,7 @@ const domHandler = (function () {
     headerLocation.innerText = `${locationData[id].cityName}, ${locationData[id].country}`;
   };
 
-  const displayWeatherForecast = async (weatherData) => {
+  const displayWeatherForecast = async (weatherData, unit) => {
     const weatherForecast = dataHandler.getForecastWeather(weatherData);
     while (dailyWeatherContainer.firstChild) {
       dailyWeatherContainer.removeChild(dailyWeatherContainer.lastChild);
@@ -123,7 +136,8 @@ const domHandler = (function () {
       lowP.innerText = 'Low';
       highTempP.innerText = `${dailyWeatherData.maxTemperature}°`;
       highP.innerText = 'High';
-      windSpeedP.innerText = `${dailyWeatherData.windSpeed}mph`;
+      const windUnit = unit === 'metric' ? 'm/s' : 'mph';
+      windSpeedP.innerText = `${dailyWeatherData.windSpeed}${windUnit}`;
       windP.innerText = 'Wind';
       humidityPercentageP.innerText = `${dailyWeatherData.humidity}%`;
       humidityP.innerText = 'Humidity';
@@ -133,10 +147,10 @@ const domHandler = (function () {
       weekDayP.classList.add('week-day', 'top-details');
       dateP.classList.add('date');
       lowTempDiv.classList.add('low-temp-container');
-      lowTempP.classList.add('low-temperature', 'top-details');
+      lowTempP.classList.add('low-temperature', 'top-details', 'temp');
       lowP.classList.add('bottom-details');
       highTempDiv.classList.add('high-temp-container');
-      highTempP.classList.add('high-temperature', 'top-details');
+      highTempP.classList.add('high-temperature', 'top-details', 'temp');
       highP.classList.add('bottom-details');
       windSpeedDiv.classList.add('wind-speed-container');
       windSpeedP.classList.add('wind-speed', 'top-details');
@@ -165,7 +179,7 @@ const domHandler = (function () {
     }
   };
 
-  const displayWeatherData = async (e) => {
+  const displayWeatherData = async (e, unit) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
     let id, locationData;
     if (
@@ -191,13 +205,15 @@ const domHandler = (function () {
       return;
     }
     setSearchOptionsStyles('hidden');
+    unit = checkboxInput.checked ? 'imperial' : 'metric';
     const weatherData = await dataHandler.getWeatherData(
       locationData[id].latitude,
-      locationData[id].longitude
+      locationData[id].longitude,
+      unit
     );
-    displayCurrentWeather(weatherData, locationData, id);
+    displayCurrentWeather(weatherData, locationData, id, unit);
     displayTodaysWeather(weatherData);
-    displayWeatherForecast(weatherData);
+    displayWeatherForecast(weatherData, unit);
     spinner.style.visibility = 'hidden';
   };
 
