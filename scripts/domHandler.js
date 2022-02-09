@@ -165,7 +165,11 @@ const domHandler = (function () {
   const displayWeatherData = async (e) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
     let id, locationData;
-    if (e === 'miami' || e.keyCode === 13 || e.type === 'click') {
+    if (
+      e === 'miami' ||
+      e.keyCode === 13 ||
+      (e.type === 'click' && e.srcElement.className !== 'search-option')
+    ) {
       id = 0;
       locationData = await dataHandler.getLocations(searchInput.value || e);
     } else {
