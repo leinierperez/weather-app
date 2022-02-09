@@ -263,10 +263,9 @@ h2 {
 }
 
 .daily-weather {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
+  justify-content: space-evenly;
   align-items: center;
-  justify-items: center;
   background-color: #001546;
   border-radius: 0.5em;
 }
