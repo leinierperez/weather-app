@@ -60,7 +60,7 @@ const domHandler = (function () {
 
       timeParagraph.innerText = hourlyData.time;
       weatherImgIcon.src = await dataHandler.getIconUrl(hourlyData.iconCode);
-      temperatureParagraph.innerText = hourlyData.temp;
+      temperatureParagraph.innerText = `${hourlyData.temp}°`;
 
       hourlyWeatherContainer.appendChild(hourlyWeatherDiv);
       hourlyWeatherDiv.appendChild(timeParagraph);
