@@ -164,6 +164,7 @@ const domHandler = (function () {
   const displayWeatherData = async (e) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
     spinner.style.visibility = 'visible';
+    setSearchOptionsStyles('hidden');
     const locationData = await dataHandler.getLocations(searchInput.value);
     const location = e.target.closest('.search-option');
     if (!location) return;
