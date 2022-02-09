@@ -30,6 +30,8 @@ const domHandler = (function () {
     '.daily-weather-container'
   );
 
+  const spinner = document.querySelector('.spinner');
+
   const init = () => {
     searchInput.addEventListener('input', displaySearchOptions);
     searchInput.addEventListener('keyup', displayWeatherData);
@@ -161,6 +163,7 @@ const domHandler = (function () {
 
   const displayWeatherData = async (e) => {
     if (e.type === 'keyup' && e.keyCode !== 13) return;
+    spinner.style.visibility = 'visible';
     const locationData = await dataHandler.getLocations(searchInput.value);
     const location = e.target.closest('.search-option');
     if (!location) return;
@@ -172,6 +175,7 @@ const domHandler = (function () {
     displayCurrentWeather(weatherData, locationData, id);
     displayTodaysWeather(weatherData);
     displayWeatherForecast(weatherData);
+    spinner.style.visibility = 'hidden';
   };
 
   const displaySearchOptions = async (e) => {
