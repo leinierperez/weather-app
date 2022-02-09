@@ -247,7 +247,7 @@ const domHandler = (function () {
 
   const handleTodaysWeatherScroll = () => {
     let isDown = false;
-    let scrollSpeedMultiplier = 3;
+    let scrollSpeedMultiplier = 1;
     hourlyWeatherContainer.addEventListener('mousedown', (e) => {
       isDown = true;
       e.preventDefault();
