@@ -30,14 +30,17 @@ const domHandler = (function () {
     '.daily-weather-container'
   );
   const errorDiv = document.querySelector('.error');
-
   const spinner = document.querySelector('.spinner');
+  const searchBarDiv = document.querySelector('.search-bar-container');
 
   const init = () => {
     searchInput.addEventListener('input', displaySearchOptions);
     searchInput.addEventListener('keyup', displayWeatherData);
     searchButton.addEventListener('click', displayWeatherData);
     searchOptionsDiv.addEventListener('click', displayWeatherData);
+    searchBarDiv.addEventListener('mouseleave', (e) => {
+      setSearchOptionsStyles('hidden');
+    });
     handleTodaysWeatherScroll();
   };
 
