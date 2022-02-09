@@ -48,10 +48,8 @@ const domHandler = (function () {
 
   const changeTemperatureUnits = (e) => {
     if (e.target.checked) {
-      console.log('farenheit');
       displayWeatherData('miami', 'imperial');
     } else {
-      console.log('celsius');
       displayWeatherData('miami', 'metric');
     }
   };
