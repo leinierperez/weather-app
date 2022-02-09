@@ -184,7 +184,6 @@ const domHandler = (function () {
     spinner.style.visibility = 'visible';
     if (id === undefined || !locationData || locationData.length === 0) {
       searchInput.style.border = '3px solid red';
-      searchInput.style.borderRight = 'none';
       searchButton.style.border = '3px solid red';
       searchButton.style.borderLeft = 'none';
       errorDiv.style.display = 'block';

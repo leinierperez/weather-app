@@ -124,10 +124,10 @@ header {
   border: 3px solid #fff;
   border-radius: 0.5em 0 0 0.5em;
   padding: 0.2em 1em;
-  border-right: none;
   outline: none;
   background-color: #001546;
   color: #fff;
+  margin: 0;
 }
 
 .search-btn {
@@ -138,6 +138,7 @@ header {
   border-left: none;
   color: #fff;
   padding: 0.5em 0.8em;
+  margin: 0;
 }
 
 .search-options {
