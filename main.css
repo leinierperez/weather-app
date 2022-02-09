@@ -75,6 +75,8 @@ select {
   }
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
 body {
   display: flex;
   flex-direction: column;
@@ -89,6 +91,7 @@ body {
   margin: auto;
   margin-bottom: 1.5em;
   position: relative;
+  font-family: 'Rubik', sans-serif;
 }
 
 header {
