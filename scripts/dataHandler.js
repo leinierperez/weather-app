@@ -5,7 +5,7 @@ const dataHandler = (function () {
 
   const getIconUrl = async (iconCode) => {
     const response = await fetch(
-      `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+      `https://openweathermap.org/img/wn/${iconCode}@2x.png`
     );
     const iconUrl = response.url;
     return iconUrl;
@@ -14,7 +14,7 @@ const dataHandler = (function () {
   const getGeocodingData = async (cityName) => {
     try {
       const geocodingRespone = await fetch(
-        `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${apiKey}`,
+        `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${apiKey}`,
         { mode: 'cors' }
       );
 
